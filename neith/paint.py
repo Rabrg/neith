@@ -41,5 +41,7 @@ while True:
             print(pred_str)
             if (pred_str[-1].isdigit() or pred_str[-1] is ')') and pred_str.count('(') is pred_str.count(')'):
                 print(pred_str + '=' + str(eval(pred_str)))
+            # for i, char in enumerate(chars):
+            #     scipy.misc.imsave(')_' + str(i) + '.png', char)
     screen.blit(background, (0, 0))
     pygame.display.flip()
