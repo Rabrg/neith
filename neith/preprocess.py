@@ -8,9 +8,10 @@ from collections import namedtuple
 
 Rectangle = namedtuple('Rectangle', 'xmin ymin xmax ymax')
 
+# the percent of overlap required to remove a contour
 IOU_THRESHOLD = 0
+# used by sci-kit image to extract contours from an image
 CONTOUR_LEVEL = 0.8
-MIN_CONTOUR_SIZE = 8
 
 
 def remove_overlap_contours(contours):
