@@ -8,11 +8,40 @@ from collections import namedtuple
 
 Rectangle = namedtuple('Rectangle', 'xmin ymin xmax ymax')
 
+IOU_THRESHOLD = 0
 CONTOUR_LEVEL = 0.8
+MIN_CONTOUR_SIZE = 8
+
+
+def remove_overlap_contours(contours):
+    to_remove = []
+    for i1, contour1 in enumerate(contours):
+        min = np.min(contour1, axis=0)
+        max = np.max(contour1, axis=0)
+        rec1 = Rectangle(min[1], min[0], max[1], max[0])
+        area1 = (rec1[2] - rec1[0]) * (rec1[3] - rec1[1])
+        for i2, contour2 in enumerate(contours):
+            min = np.min(contour2, axis=0)
+            max = np.max(contour2, axis=0)
+            rec2 = Rectangle(min[1], min[0], max[1], max[0])
+            area2 = (rec2[2] - rec2[0]) * (rec2[3] - rec2[1])
+            if contour1 is not contour2:
+                iou = get_iou(rec1, rec2)
+                if iou > IOU_THRESHOLD:
+                    if area1 > area2 and i2 not in to_remove:
+                        to_remove.append(i2)
+                    elif i1 not in to_remove:
+                        to_remove.append(i1)
+    contours_new = []
+    for i, c in enumerate(contours):
+        if i not in to_remove:
+            contours_new.append(c)
+    return contours_new
 
 
 def equation_char_list(r):
     contours = measure.find_contours(r, CONTOUR_LEVEL)
+    contours = remove_overlap_contours(contours)
 
     resized_char_dict = dict()
     for n, contour in enumerate(contours):
