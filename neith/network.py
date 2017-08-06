@@ -14,9 +14,10 @@ epochs = 12
 # input image dimensions
 img_rows, img_cols = 32, 32
 
-# the data, shuffled and split between train and test sets
+# load the dataset
 X, y = dataset.load_dataset()
 
+# reshape the features for the network and determine the shape based on the library's current image format
 if K.image_data_format() == 'channels_first':
     X = X.reshape(X.shape[0], 1, img_rows, img_cols)
     input_shape = (1, img_rows, img_cols)
@@ -29,8 +30,10 @@ X = X.astype('float32')
 # convert class vectors to binary class matrices
 y = keras.utils.to_categorical(y, num_classes)
 
+# split the dataset into training and testing (validation) sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
 
+# create the model
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3),
                  activation='relu',
@@ -47,6 +50,7 @@ model.add(Dense(num_classes, activation='softmax'))
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta())
 
+# train and save the model
 # model.fit(X_train, y_train,
 #           batch_size=batch_size,
 #           epochs=epochs,
@@ -54,5 +58,6 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 #           validation_data=(X_test, y_test))
 # model.save('model.h5')
 
+# load and predict using the model
 model.load_weights('model.h5')
 model.predict_classes(X_test, verbose=0)
