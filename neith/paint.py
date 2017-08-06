@@ -18,6 +18,10 @@ screen = pygame.display.set_mode(resolution)
 background = pygame.Surface(screen.get_size())
 background.fill(background_color)
 
+font = pygame.font.SysFont("monospace", 48)
+equ_label = None
+ans_label = None
+
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -38,10 +42,15 @@ while True:
             for p in pred:
                 pred_str += dataset.CLASS_INDEX[p]
             pred_str = pred_str.replace('star', '*').replace('slash', '/')
-            print(pred_str)
+            equ_label = font.render('equ = ' + pred_str, 1, (0, 255, 0))
             if (pred_str[-1].isdigit() or pred_str[-1] is ')') and pred_str.count('(') is pred_str.count(')'):
-                print(pred_str + '=' + str(eval(pred_str)))
+                ans_label = font.render('ans = ' + str(eval(pred_str)), 1, (0, 255, 0))
+
             # for i, char in enumerate(chars):
             #     scipy.misc.imsave(')_' + str(i) + '.png', char)
     screen.blit(background, (0, 0))
+    if equ_label is not None:
+        screen.blit(equ_label, (20, resolution[1] - 100))
+    if ans_label is not None:
+        screen.blit(ans_label, (20, resolution[1] - 50))
     pygame.display.flip()
