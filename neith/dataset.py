@@ -5,6 +5,7 @@ import numpy as np
 
 DATASET_PATH = '../res/'
 CLASS_INDEX = ['(', ')', '+', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'slash', 'star']
+NUM_CLASSES = len(CLASS_INDEX)
 
 
 def load_dataset():
