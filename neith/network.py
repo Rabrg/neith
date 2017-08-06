@@ -53,3 +53,6 @@ model.fit(X_train, y_train,
           verbose=1,
           validation_data=(X_test, y_test))
 model.save('model.h5')
+
+# model.load_weights('model.h5')
+# model.predict_classes(X_test, verbose=0)
