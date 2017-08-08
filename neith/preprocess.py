@@ -15,7 +15,7 @@ CONTOUR_LEVEL = 0.8
 
 
 # TODO: optimize from O(n^2) to O(n)
-def remove_overlap_contours(contours):
+def __remove_overlap_contours(contours):
     # a list which stores all of the overlapping contours to be removed
     to_remove = []
     for i1, contour1 in enumerate(contours):
@@ -34,7 +34,7 @@ def remove_overlap_contours(contours):
             area2 = (rec2[2] - rec2[0]) * (rec2[3] - rec2[1])
             if contour1 is not contour2:
                 # get the intersect over union for the two bounding boxes
-                iou = get_iou(rec1, rec2)
+                iou = __get_iou(rec1, rec2)
                 # if the intersect over union is overt the threshold, remove the contour with the smaller area
                 if iou > IOU_THRESHOLD:
                     if area1 > area2 and i2 not in to_remove:
@@ -54,7 +54,7 @@ def extract_chars(pixels):
     # use sci-kit image to find the contours of the image
     contours = measure.find_contours(pixels, CONTOUR_LEVEL)
     # calls an algorithm on the contours to remove unwanted overlapping contours like the holes in 6's, 8's, and 9's
-    contours = remove_overlap_contours(contours)
+    contours = __remove_overlap_contours(contours)
 
     # populate a dictionary with key of the left most x coordinate of the contour and value of the resized contour
     resized_char_dict = dict()
@@ -73,7 +73,7 @@ def extract_chars(pixels):
     return extracted_chars
 
 
-def get_iou(rec1, rec2):
+def __get_iou(rec1, rec2):
     # determine the coordinates of the intersection rectangle
     x_left = max(rec1[0], rec2[0])
     y_top = max(rec1[1], rec2[1])
