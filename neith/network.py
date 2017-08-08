@@ -8,7 +8,6 @@ from neith import dataset
 from sklearn.model_selection import train_test_split
 
 batch_size = 8
-num_classes = dataset.NUM_CLASSES
 epochs = 12
 
 # load the dataset
@@ -25,7 +24,7 @@ else:
 X = X.astype('float32')
 
 # convert class vectors to binary class matrices
-y = keras.utils.to_categorical(y, num_classes)
+y = keras.utils.to_categorical(y, dataset.NUM_CLASSES)
 
 # split the dataset into training and testing (validation) sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0)
@@ -42,7 +41,7 @@ model.add(Dropout(0.25))
 model.add(Flatten())
 model.add(Dense(1024, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(num_classes, activation='softmax'))
+model.add(Dense(dataset.NUM_CLASSES, activation='softmax'))
 
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta())
