@@ -36,7 +36,7 @@ while True:
             pixels = np.divide(pixels, 16777215)
             pixels = pixels.transpose()
             chars = preprocess.extract_chars(pixels)
-            chars = chars.reshape(chars.shape[0], 32, 32, 1)
+            chars = chars.reshape(chars.shape[0], dataset.IMG_ROWS, dataset.IMG_COLS, 1)
             pred = network.model.predict_classes(chars, verbose=0)
             pred_str = str()
             for p in pred:

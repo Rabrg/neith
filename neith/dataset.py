@@ -6,11 +6,13 @@ import numpy as np
 DATASET_PATH = '../res/'
 CLASS_INDEX = ['(', ')', '+', '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'slash', 'star']
 NUM_CLASSES = len(CLASS_INDEX)
+IMG_ROWS = 32
+IMG_COLS = 32
 
 
 def load_dataset():
     files = [f for f in listdir(DATASET_PATH) if isfile(join(DATASET_PATH, f))]
-    features = np.empty((len(files), 32, 32))
+    features = np.empty((len(files), IMG_ROWS, IMG_COLS))
     labels = []
     for i, file in enumerate(files):
         feature = np.array(Image.open(DATASET_PATH + file).convert(mode='L'))

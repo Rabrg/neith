@@ -11,19 +11,16 @@ batch_size = 8
 num_classes = dataset.NUM_CLASSES
 epochs = 12
 
-# input image dimensions
-img_rows, img_cols = 32, 32
-
 # load the dataset
 X, y = dataset.load_dataset()
 
 # reshape the features for the network and determine the shape based on the library's current image format
 if K.image_data_format() == 'channels_first':
-    X = X.reshape(X.shape[0], 1, img_rows, img_cols)
-    input_shape = (1, img_rows, img_cols)
+    X = X.reshape(X.shape[0], 1, dataset.IMG_ROWS, dataset.IMG_COLS)
+    input_shape = (1, dataset.IMG_ROWS, dataset.IMG_COLS)
 else:
-    X = X.reshape(X.shape[0], img_rows, img_cols, 1)
-    input_shape = (img_rows, img_cols, 1)
+    X = X.reshape(X.shape[0], dataset.IMG_ROWS, dataset.IMG_COLS, 1)
+    input_shape = (dataset.IMG_ROWS, dataset.IMG_COLS, 1)
 
 X = X.astype('float32')
 
