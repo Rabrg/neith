@@ -14,20 +14,24 @@ IOU_THRESHOLD = 0
 CONTOUR_LEVEL = 0.8
 
 
+def __get_min_max(contour):
+    min = np.min(contour, axis=0)
+    max = np.max(contour, axis=0)
+    return min, max
+
+
 # TODO: optimize from O(n^2) to O(n)
 def __remove_overlap_contours(contours):
     # a list which stores all of the overlapping contours to be removed
     to_remove = []
     for i1, contour1 in enumerate(contours):
-        min = np.min(contour1, axis=0)
-        max = np.max(contour1, axis=0)
+        min, max = __get_min_max(contour1)
         # create a bounding box for contour1
         rec1 = Rectangle(min[1], min[0], max[1], max[0])
         # calculate the area of contour1
         area1 = (rec1[2] - rec1[0]) * (rec1[3] - rec1[1])
         for i2, contour2 in enumerate(contours):
-            min = np.min(contour2, axis=0)
-            max = np.max(contour2, axis=0)
+            min, max = __get_min_max(contour2)
             # create a bounding box for contour2
             rec2 = Rectangle(min[1], min[0], max[1], max[0])
             # calculate the area of contour2
@@ -59,8 +63,7 @@ def extract_chars(pixels):
     # populate a dictionary with key of the left most x coordinate of the contour and value of the resized contour
     resized_char_dict = dict()
     for n, contour in enumerate(contours):
-        min = np.min(contour, axis=0)
-        max = np.max(contour, axis=0)
+        min, max = __get_min_max(contour)
         resized_contour = transform.resize(pixels[int(min[0]):int(max[0]), int(min[1]):int(max[1])], (32, 32))
         resized_char_dict[min[1]] = resized_contour
 
