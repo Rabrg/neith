@@ -50,7 +50,7 @@ def remove_overlap_contours(contours):
     return contours_new
 
 
-def equation_char_list(pixels):
+def extract_chars(pixels):
     # use sci-kit image to find the contours of the image
     contours = measure.find_contours(pixels, CONTOUR_LEVEL)
     # calls an algorithm on the contours to remove unwanted overlapping contours like the holes in 6's, 8's, and 9's
@@ -67,10 +67,10 @@ def equation_char_list(pixels):
     # sort the map by key (left most x coordinate of the contour)
     sorted_dict = sorted(resized_char_dict.items(), key=operator.itemgetter(0))
     # extract the contours from the sorted dictionary into a list
-    char_imgs = np.asarray([i[1] for i in sorted_dict])
+    extracted_chars = np.asarray([i[1] for i in sorted_dict])
     # normalize the contours by subtracting 0.5 to each pixel value
-    np.subtract(char_imgs, 0.5, out=char_imgs)
-    return char_imgs
+    np.subtract(extracted_chars, 0.5, out=extracted_chars)
+    return extracted_chars
 
 
 def get_iou(rec1, rec2):
